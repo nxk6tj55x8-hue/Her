@@ -1,100 +1,51 @@
 
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg,#ffd6ec,#d6f0ff,#fbe7c6);
-  overflow-x: hidden;
+window.onload = function(){
+  document.querySelector(".preloader").style.display = "none";
 }
 
-section {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 20px;
+const startBtn = document.getElementById("startBtn");
+const sections = document.querySelectorAll(".hidden");
+
+startBtn.onclick = () => {
+  sections.forEach(sec => sec.style.display = "flex");
+  startBtn.style.display = "none";
 }
 
-.hidden {
-  display: none;
+document.querySelectorAll(".bubble").forEach(bubble => {
+  bubble.onclick = () => {
+    alert("Exhibit confirmed. Extremely cute behavior detected.");
+  }
+});
+
+let score = 0;
+const gameArea = document.querySelector(".game-area");
+
+function createCompliment(){
+  const words = ["Pretty","Drama Queen","Sunshine","Trouble","Angel","Menace"];
+  const div = document.createElement("div");
+  div.classList.add("falling");
+  div.innerText = words[Math.floor(Math.random()*words.length)];
+  div.style.left = Math.random()*80 + "%";
+  div.onclick = () => {
+    score++;
+    document.getElementById("score").innerText = score;
+    div.remove();
+  }
+  gameArea.appendChild(div);
+  setTimeout(()=>div.remove(),4000);
 }
 
-button {
-  padding: 12px 20px;
-  border-radius: 30px;
-  border: none;
-  background: #ff9ecf;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-}
+setInterval(createCompliment,1000);
 
-button:hover {
-  transform: scale(1.1);
-}
+const musicBtn = document.getElementById("musicBtn");
+const music = document.getElementById("bgMusic");
 
-.bubble-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-}
-
-.bubble {
-  background: white;
-  padding: 15px 20px;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.bubble:hover {
-  background: #ffe0f0;
-  transform: scale(1.1);
-}
-
-.game-area {
-  position: relative;
-  width: 100%;
-  height: 300px;
-  overflow: hidden;
-}
-
-.falling {
-  position: absolute;
-  background: white;
-  padding: 8px 15px;
-  border-radius: 20px;
-  cursor: pointer;
-  animation: fall 4s linear forwards;
-}
-
-@keyframes fall {
-  from { top: -50px; }
-  to { top: 350px; }
-}
-
-.slider img {
-  width: 250px;
-  border-radius: 15px;
-  margin: 10px;
-}
-
-.music {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-}
-
-.preloader {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+musicBtn.onclick = () => {
+  if(music.paused){
+    music.play();
+    musicBtn.innerText = "⏸ Pause Music";
+  } else {
+    music.pause();
+    musicBtn.innerText = "▶ Play Music";
+  }
 }
